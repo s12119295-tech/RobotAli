@@ -111,6 +111,27 @@
         }
         .chat-history::-webkit-scrollbar { width: 4px; }
         .chat-history::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+        .btn-admin-panel {
+            width: 100%; padding: 10px 16px; border-radius: var(--radius); border: 1px solid rgba(139,92,246,0.35);
+            cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.3px; transition: all var(--transition);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            background: rgba(139,92,246,0.12); color: #c4b5fd;
+        }
+        .btn-admin-panel:hover { background: rgba(139,92,246,0.22); color: #fff; }
+        .btn-admin-panel svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .sidebar-footer {
+            flex-shrink: 0; padding: 12px 16px; border-top: 1px solid var(--glass-border);
+            display: flex; align-items: center; gap: 10px; cursor: pointer; transition: background var(--transition);
+        }
+        .sidebar-footer:hover { background: rgba(255,255,255,0.05); }
+        .profile-avatar {
+            width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+            background: linear-gradient(135deg, var(--accent), #6d28d9); color: #fff;
+            display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px;
+        }
+        .profile-info { flex: 1; min-width: 0; }
+        .profile-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .profile-email { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .chat-history-item {
             padding: 10px 12px;
             border-radius: var(--radius-sm);
@@ -831,8 +852,20 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                     Temporary Chat
                 </button>
+                <button class="btn-admin-panel" id="btnSidebarAdmin" style="display:none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>
+                    Admin Panel
+                </button>
             </div>
             <div class="chat-history" id="chatHistory"></div>
+            <div class="sidebar-footer" id="sidebarProfileRow">
+                <div class="profile-avatar" id="profileAvatar">?</div>
+                <div class="profile-info">
+                    <div class="profile-name" id="profileNameDisplay">کاربر</div>
+                    <div class="profile-email" id="profileEmailDisplay"></div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted);flex-shrink:0;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
         </aside>
 
         <div class="main-area" id="mainArea">
@@ -841,14 +874,9 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                 </button>
                 <span class="top-bar-title" id="topBarTitle">RobotAli</span>
+                <select id="modelSelect" style="max-width:180px;padding:7px 10px;border-radius:10px;border:1px solid var(--glass-border);background:rgba(0,0,0,0.3);color:var(--text-primary);font-family:inherit;font-size:12px;"></select>
                 <button class="btn-icon" id="btnDirToggle" title="راست‌چین/چپ‌چین">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="7" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="7" y2="18"/></svg>
-                </button>
-                <button class="btn-icon" id="btnSettings">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                </button>
-                <button class="btn-icon" id="btnGoAdmin" style="display:none;" title="پنل ادمین">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>
                 </button>
                 <button class="btn-icon" id="btnLogout" title="خروج">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -892,16 +920,15 @@
                 <input type="text" id="userNameInput" placeholder="e.g. Ali" value="User">
             </div>
             <div class="form-group">
-                <label for="modelSelect">Model</label>
-                <select id="modelSelect">
-                </select>
-            </div>
-            <div class="form-group">
                 <label for="temperatureRange">Temperature</label>
                 <div class="range-group">
                     <input type="range" id="temperatureRange" min="0" max="2" step="0.1" value="0.7">
                     <span class="range-value" id="temperatureValue">0.7</span>
                 </div>
+            </div>
+            <div class="form-group" style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px 14px;">
+                <label style="margin-bottom:6px;display:block;">مصرف کردیت</label>
+                <div id="settingsUsageInfo" style="font-size:13px;color:var(--text-secondary);">در حال بارگذاری...</div>
             </div>
             <div class="btn-row">
                 <button class="btn btn-secondary" id="btnSettingsCancel">Cancel</button>
@@ -940,7 +967,11 @@
             const btnNewChat = document.getElementById('btnNewChat');
             const btnTempChat = document.getElementById('btnTempChat');
             const btnToggleSidebar = document.getElementById('btnToggleSidebar');
-            const btnSettings = document.getElementById('btnSettings');
+            const sidebarProfileRow = document.getElementById('sidebarProfileRow');
+            const btnSidebarAdmin = document.getElementById('btnSidebarAdmin');
+            const profileAvatar = document.getElementById('profileAvatar');
+            const profileNameDisplay = document.getElementById('profileNameDisplay');
+            const profileEmailDisplay = document.getElementById('profileEmailDisplay');
             const topBarTitle = document.getElementById('topBarTitle');
             const settingsModalOverlay = document.getElementById('settingsModalOverlay');
             const userNameInput = document.getElementById('userNameInput');
@@ -2059,8 +2090,16 @@
                     modelSelect.value = current;
                 } else if (list.length > 0) {
                     modelSelect.value = list[0].id;
+                    settings.model = list[0].id;
+                    saveAll();
                 }
             }
+
+            modelSelect.addEventListener('change', () => {
+                settings.model = modelSelect.value;
+                saveAll();
+                renderModelOptions();
+            });
 
             function openSettings() {
                 userNameInput.value = settings.userName || '';
@@ -2068,6 +2107,22 @@
                 temperatureValue.textContent = settings.temperature;
                 settingsModalOverlay.style.display = 'flex';
                 loadModelList();
+                const usageEl = document.getElementById('settingsUsageInfo');
+                if (usageEl) {
+                    usageEl.textContent = 'در حال بارگذاری...';
+                    if (window.__adminCall) {
+                        window.__adminCall('get_own_profile', {}).then(res => {
+                            if (res && res.success && res.profile) {
+                                const p = res.profile;
+                                usageEl.textContent = p.is_admin
+                                    ? 'کردیت شما نامحدود است (ادمین) — ۹۹۹'
+                                    : `کردیت باقیمانده: ${Number(p.credits).toLocaleString('fa-IR')}`;
+                            } else {
+                                usageEl.textContent = 'دریافت اطلاعات مصرف ممکن نشد.';
+                            }
+                        }).catch(() => { usageEl.textContent = 'دریافت اطلاعات مصرف ممکن نشد.'; });
+                    }
+                }
             }
 
             function closeSettings() { settingsModalOverlay.style.display = 'none'; }
@@ -2141,7 +2196,7 @@
                 sidebar.classList.contains('open') ? closeMobileSidebar() : openMobileSidebar();
             });
             sidebarOverlay.addEventListener('click', closeMobileSidebar);
-            btnSettings.addEventListener('click', openSettings);
+            sidebarProfileRow.addEventListener('click', openSettings);
             btnSettingsCancel.addEventListener('click', closeSettings);
             btnSettingsSave.addEventListener('click', saveSettings);
             settingsModalOverlay.addEventListener('click', (e) => { if (e.target === settingsModalOverlay) closeSettings(); });
@@ -2314,12 +2369,17 @@
                 return;
             }
             window.__robotaliDisplayName = profile.display_name || '';
+            window.__robotaliUserEmail = profile.email || '';
             if (!chatAppStarted) {
                 chatAppStarted = true;
                 window.startChatApp();
             }
             showPage('chatApp');
-            $('btnGoAdmin').style.display = profile.is_admin ? 'inline-flex' : 'none';
+            const displayName = (profile.display_name || profile.email || 'کاربر').trim();
+            $('profileNameDisplay').textContent = displayName;
+            $('profileEmailDisplay').textContent = profile.email || '';
+            $('profileAvatar').textContent = displayName.charAt(0).toUpperCase();
+            $('btnSidebarAdmin').style.display = profile.is_admin ? 'flex' : 'none';
             if (profile.is_admin) loadAdminData();
         }
 
@@ -2332,7 +2392,8 @@
         $('btnLogout').addEventListener('click', doLogout);
         $('btnDisabledLogout').addEventListener('click', doLogout);
         $('btnAdminLogout').addEventListener('click', doLogout);
-        $('btnGoAdmin').addEventListener('click', () => { showPage('adminPanel'); loadAdminData(); });
+        $('btnSidebarAdmin').addEventListener('click', () => { showPage('adminPanel'); loadAdminData(); });
+        window.__adminCall = adminCall;
         $('btnAdminBack').addEventListener('click', () => { showPage('chatApp'); });
 
         let creditConsumeQueue = 0;
